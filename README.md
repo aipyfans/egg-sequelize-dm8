@@ -1,4 +1,64 @@
-# egg-sequelize
+# egg-sequelize-dm8
+
+在原有的基础上支持达梦数据库DM8(dmdb)
+
+## 安装
+
+```bash
+
+$ npm install --save dmdb # For DM8 dialects
+$ npm install --save git@github.com:aipyfans/egg-sequelize-dm8.git
+
+# Or use other database backend.
+$ npm install --save mysql2 # For both mysql and mariadb dialects
+$ npm install --save pg pg-hstore # PostgreSQL
+$ npm install --save tedious # MSSQL
+```
+
+## plugin.js 配置
+
+```js
+  sequelize: {
+    enable: true,
+    package: 'egg-sequelize-dm8',
+  },
+```
+
+## confg.env.js 配置
+
+```js
+const host = '127.0.0.1';
+const port = 5236;
+const database = 'db_name';
+const username = 'username';
+const password = 'password';
+
+// 是否自动提交
+const autoCommit = 'autoCommit=false';
+// 禁用加密链接
+const loginEncrypt = 'loginEncrypt=false';
+// 将CLOB类型转为字符串
+const clobAsString = 'clobAsString=false';
+// 其它的参数请参见下方链接
+// https://www.cnblogs.com/masahiro/p/17580754.html
+
+
+config.sequelize = {
+  dialect: 'dmdb',
+  dialectOptions: {
+    connectString: `dm://${username}:${password}@${host}:${port}?${autoCommit}&${clobAsString}&${loginEncrypt}`
+  },
+  host, port, database, username, password
+  // 其它选项
+  define: {
+    freezeTableName: true,
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  },
+  timezone: '+08:00',
+};
+```
 
 [Sequelize](http://sequelizejs.com) plugin for Egg.js.
 
